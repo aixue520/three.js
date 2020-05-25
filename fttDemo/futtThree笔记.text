@@ -1,0 +1,203 @@
+//旋转的方块代码
+<script>
+	var scene = new THREE.Scene();
+	var camera = new THREE.PerspectiveCamera(75,window.innerWidth/window.innerHeight,0.1,1000);
+	var renderer = new THREE.WebGLRenderer();
+	
+	var geometry = new THREE.CubeGeometry(1,1,1);
+	var material = new THREE.MeshBasicMaterial({color:0x00ff00});
+	//设置物体,在three.js中，我们使用Mesh模型，Mesh的构造函数是这样的：Mesh( geometry, material ) geometry是它的形状，material是它的材质。 三维模型通常用三角形的网格来描述
+	var cube =  new THREE.Mesh(geometry,material);    
+	scene.add(cube);
+	
+	camera.position.z = 5;
+	
+	renderer.setSize(window.innerWidth,window.innerHeight);
+	//将渲染器的元素添加到页面中
+	document.body.appendChild(renderer.domElement);
+	renderer.render(scene,camera); 
+
+    // 方块动起来
+	// function render(){
+	// 	requestAnimationFrame(render);  //请求动画帧:与setTimeout相比，requestAnimationFrame最大的优势是由系统来决定回调函数的执行时机。具体一点讲，如果屏幕刷新率是60Hz,那么回调函数就每16.7ms被执行一次，如果刷新率是75Hz，那么这个时间间隔就变成了1000/75=13.3ms，换句话说就是，requestAnimationFrame的步伐跟着系统的刷新步伐走。它能保证回调函数在屏幕每一次的刷新间隔中只被执行一次，这样就不会引起丢帧现象，也不会导致动画出现卡顿的问题。
+	// 	cube.rotation.x += 0.1;
+	// 	cube.rotation.y += 0.1;
+	// 	renderer.render(scene,camera);(方块动起来删除方面的相同的代码)
+	// }
+	// render();
+</script>
+
+
+	
+Three.js
+三个组件：场景（scene）、相机（camera）和渲染器（renderer）
+记住关建语句：有了这三样东西，我们才能够使用相机将场景渲染到网页上去。（注意是使用相机将场景转染到网页上）
+
+创建这三要素的代码如下：
+var scene = new THREE.Scene();  // 场景
+var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);// 透视相机
+var renderer = new THREE.WebGLRenderer();   // 渲染器
+renderer.setSize(window.innerWidth, window.innerHeight);    // 设置渲染器的大小为窗口的内宽度，也就是内容区的宽度
+document.body.appendChild(renderer.domElement);
+
+场景
+在Threejs中场景就只有一种，用THREE.Scene来表示，要构件一个场景也很简单，只要new一个对象就可以了，代码如下：
+var scene = new THREE.Scene();
+场景是所有物体的容器，如果要显示一个苹果，就需要将苹果对象加入场景中。
+
+
+相机
+另一个组建是相机，相机决定了场景中那个角度的景色会显示出来。相机就像人的眼睛一样，人站在不同位置，抬头或者低头都能够看到不同的景色。
+场景只有一种，但是相机却又很多种。和现实中一样，不同的相机确定了呈相的各个方面。
+比如有的相机适合人像，有的相机适合风景，专业的摄影师根据实际用途不一样，选择不同的相机。对程序员来说，只要设置不同的相机参数，就能够让相机产生不一样的效果。
+在Threejs中有多种相机，这里介绍一种：
+透视相机（THREE.PerspectiveCamera）
+这里我们使用一个透视相机，透视相机的参数很多，这里先不详细讲解。后面关于相机的那一章，我们会花大力气来讲。定义一个相机的代码如下所示：（已经迫不及待想看看相机的参数了，点这里）
+var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+//fov，aspect，near，far(4个参数)：
+fov表示摄像机视锥体垂直视野角度，最小值为0，最大值为180，默认值为50，实际项目中一般都定义45，因为45最接近人正常睁眼角度；
+aspect表示摄像机视锥体长宽比，默认长宽比为1，即表示看到的是正方形，实际项目中使用的是屏幕的宽高比；
+near表示摄像机视锥体近端面，这个值默认为0.1，实际项目中都会设置为1；
+far表示摄像机视锥体远端面，默认为2000，这个值可以是无限的，说的简单点就是我们视觉所能看到的最远距离。
+透视投影相机的位置和position，up，lookAt有关系。
+position用来指定相机在三维坐标中的位置，
+up用来指定相机拍摄时相机头顶的方向，
+lookAt表示相机拍摄时指向的中心点。具体的设置如下代码：
+// 统一设置position中xyz坐标
+camera.position.set(0,0,0);
+
+ // 单独设置position中特定坐标
+ camera.position.x = 0;
+ camera.position.y = 0;
+ camera.position.z = 0;
+ 
+ // 统一设置up中xyz坐标
+ camera.up.set(0,1,0);
+ 
+// 单独设置up中特定坐标（哪个轴为上方，意思就是说坐标的方向）
+ camera.up.x = 0;
+ camera.up.y = 1;
+ camera.up.z = 0;
+
+ // lookAt设置必须统一设置
+ camera.lookAt({
+    x:0,
+    y:0,
+    z:0
+});
+
+
+ 
+渲染器
+最后一步就是设置渲染器，渲染器决定了渲染的结果应该画在页面的什么元素上面，并且以怎样的方式来绘制。这里我们定义了一个WebRenderer渲染器，代码如下所示：
+var renderer = new THREE.WebGLRenderer();
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
+注意，渲染器renderer的domElement元素，表示渲染器中的画布，所有的渲染都是画在domElement上的，
+所以这里的appendChild表示将这个domElement挂接在body下面，这样渲染的结果就能够在页面中显示了。
+
+添加物体到场景中
+var geometry = new THREE.CubeGeometry(1,1,1); 
+var material = new THREE.MeshBasicMaterial({color: 0x00ff00});
+var cube = new THREE.Mesh(geometry, material); 
+scene.add(cube);
+
+THREE.CubeGeometry：他是一个几何体
+CubeGeometry(width, height, depth, segmentsWidth, segmentsHeight, segmentsDepth, materials, sides)
+width：立方体x轴的长度
+height：立方体y轴的长度
+depth：立方体z轴的深度，也就是长度
+
+
+渲染（渲染不是渲染器，一个是实物，一个是动作）
+使用渲染器，结合相机和场景来得到结果画面。实现这个功能的函数是：
+renderer.render(scene, camera);
+渲染函数的原型：
+render( scene, camera, renderTarget, forceClear )
+scene：前面定义的场景
+camera：前面定义的相机
+renderTarget：渲染的目标，默认是渲染到前面定义的render变量中
+forceClear：每次绘制之前都将画布的内容给清除，即使自动清除标志autoClear为false，也会清除。
+
+渲染循环
+渲染有两种方式：实时渲染和离线渲染 。
+离线渲染：事先渲染好一帧一帧的图片，然后再把图片拼接成电影的。
+实时渲染：就是需要不停的对画面进行渲染，即使画面中什么也没有改变，也需要重新渲染。下面就是一个渲染循环：
+function render() {
+    cube.rotation.x += 0.1;
+    cube.rotation.y += 0.1;
+    renderer.render(scene, camera);
+    requestAnimationFrame(render);
+}
+其中一个重要的函数是requestAnimationFrame，这个函数就是让浏览器去执行一次参数中的函数，这样通过上面render中调用requestAnimationFrame()函数，requestAnimationFrame()函数又让rander()再执行一次，就形成了我们通常所说的游戏循环了。
+
+场景，相机，渲染器之间的关系：
+Three.js中的场景是一个物体的容器，开发者可以将需要的角色放入场景中，例如苹果，葡萄。同时，角色自身也管理着其在场景中的位置。
+相机的作用就是面对场景，在场景中取一个合适的景，把它拍下来。
+渲染器的作用就是将相机拍摄下来的图片，放到浏览器中去显示。
+（物体是直接放在场景中的，渲染器：结合相机和场景得到画面，还要放到浏览器中）
+
+
+
+
+
+
+
+
+向量
+THREE.Vector3 = function ( x, y, z ) {
+this.x = x || 0;
+this.y = y || 0;
+this.z = z || 0;
+};
+
+//Threejs 中定义一个点
+（THREE.Vector3D）
+假设有一个点x=4，y=8，z=9。你可以这样定义它：
+var point1 = new THREE.Vecotr3(4,8,9);
+另外你也可以使用set方法，代码如下：
+var point1 = new THREE.Vector3();
+point1.set(4,8,9);
+
+
+画一条彩色线：这是一条每个点不同颜色的线条(test1.js)
+
+
+
+
+//线条的深入理解
+在Threejs中，一条线由点，材质和颜色组成。
+点由THREE.Vector3表示，Threejs中没有提供单独画点的函数，它必须被放到一个THREE.Geometry形状中，
+这个结构中包含一个数组vertices，这个vertices就是存放无数的点（THREE.Vector3）的数组。
+为了绘制一条直线，首先我们需要定义两个点，如下代码所示：
+var p1 = new THREE.Vector3( -100, 0, 100 );
+var p2 = new THREE.Vector3(  100, 0, -100 );
+声明一个THREE.Geometry，并把点加进入
+var geometry = new THREE.Geometry();
+geometry.vertices.push(p1);
+geometry.vertices.push(p2);
+
+geometry.vertices的能够使用push方法，是因为geometry.vertices是一个数组。这样geometry 中就有了2个点了。
+然后我们需要给线加一种材质，可以使用专为线准备的材质，THREE.LineBasicMaterial。
+最终我们通过THREE.Line绘制了一条线:
+var line = new THREE.Line( geometry, material, THREE.LinePieces);
+
+
+画高中时深爱的坐标平面(test2.js)
+Three单位 
+1个单位（一般为1米）对应屏幕多少像素
+gluPerspective(45,w/h,0.1,1000)，屏幕分辨率1024*768为例
+计算屏幕近景裁剪面的高 h = 2*tan(22.5)*0.1=0.082842
+0.0828米对应 768像素
+那么1米就对应 768/0.0828 = 9275像素（图像在z位置为0的情况）
+如果z不为0
+h = 2*tan(22.5)*0.15 = 0.12426米
+那么1米就对应 768/0.12426 = 6180像素
+
+所以
+so 1米单位长度与像素的换算关系为
+1米 = 屏幕分辨率的高/裁剪面的高 = 768/ (2*tan(22.5)*(ZNear+z))
+其中ZNear是图中的0.1
+z是1.5-1=0.05
+
+

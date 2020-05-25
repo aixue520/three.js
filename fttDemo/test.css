@@ -1,0 +1,43 @@
+@font-face {
+  font-family: iconfont;
+  src: url(https://img.yjh369.com/img/yjh/fonts/iconfont5b0690e1.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: vanIcon;
+  src: url(https://img.yjh369.com/img/yjh/fonts/vant-icon-66a14a.ttf) format("truetype");
+  /* src: url(https://img.yzcdn.cn/vant/vant-icon-66a14a.ttf) format("truetype"); */
+}
+
+.van-icon {
+  font-family: iconfont, vanIcon !important;
+  font-size: 14px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+i.van-icon-edit:before {
+  content: "\F04B";
+}
+
+i.van-icon-huida:before {
+  content: "\E678";
+}
+
+i.van-icon-wen:before {
+  content: "\E715";
+}
+.van-icon-balance-list-o:before {
+  content: "\F011";
+}
+.van-icon {
+  position: relative;
+  font: 14px/1 vant-icon;
+  font-size: inherit;
+  text-rendering: auto;
+}
+
+i.van-icon-shouhouguanli:before {
+  content: "\E608";
+}
