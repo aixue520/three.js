@@ -15,8 +15,9 @@ var renderer;
 				console.info(width,height,window.screen.width,window.screen.height);
                 camera = new THREE.PerspectiveCamera(45, width / height, 1, 10000);
                 camera.position.x = 0;
-                camera.position.y = 300;
+                camera.position.y = 500;
                 camera.position.z = 0;
+				//up:哪个轴在上面
                 camera.up.x = 0;
                 camera.up.y = 0;
                 camera.up.z = 1;
@@ -28,12 +29,12 @@ var renderer;
             }
 			
 			// 1个单位（一般为1米）对应屏幕多少像素
-			//camera.position.y = 150;
-			// (45,w/h,1,1000)，屏幕分辨率560*600为例
+			//camera.position.y = 500;
+			// (45,w/h,1,1000)，屏幕分辨率708*600为例
 			//2*tan(22.5) = 2* 0.414213562373 = 0.82842
-			// 计算屏幕近景裁剪面的高 h = 2*tan(22.5)*150 = 0.82842 * 150 = 124.263  
-			//  768/ (2*tan(22.5)*(ZNear+z)) (ZNear是第三个参数,例子为1,z:150-1)
-			//1单位 = 600 /  124.263   = 4.82px
+			// 计算屏幕近景裁剪面的高 h = 2*tan(22.5)*500 = 0.82842 * 500 = 414.21
+			//  600/ (2*tan(22.5)*(ZNear+z)) (ZNear是第三个参数,例子为1,z:500-1)
+			//1单位 = 600 /   414.21   =1.7px
 			
             var scene;
             function initScene() {
@@ -60,7 +61,7 @@ var renderer;
 					scene.add( line );
                     var line = new THREE.Line( geometry, new THREE.LineBasicMaterial( { color: 0x000000, opacity: 0.2 } ) );
                     line.position.x = ( i * 50 ) - 500;
-                    line.rotation.y = 90 * Math.PI / 180; //旋转90度
+                    // line.rotation.y = 90 * Math.PI / 180; //旋转90度
                     scene.add( line );
                 }
             }
